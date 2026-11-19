@@ -1588,3 +1588,25 @@ section[id], #work {
   .svc:hover { transform: none; box-shadow: none; }
   .quote:hover { transform: none; box-shadow: none; }
 }
+
+/* ==========================================================================
+   ELECTRIC SDF BRAND STAGE
+   ========================================================================== */
+.electric-stage { max-width: 560px; width: 100%; }
+.electric-logo {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  margin-inline: auto;
+  touch-action: none;
+  -webkit-tap-highlight-color: transparent;
+  cursor: crosshair;
+}
+.electric-logo canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.electric-logo svg { display: none; }

@@ -109,47 +109,22 @@
         </ul>
       </div>
 
-      <!-- 3D / PARALLAX SHOWCASE STAGE -->
-      <div class="stage-wrap" data-aos="fade-up" data-aos-delay="140">
-        <div class="stage" id="stage" data-tilt tabindex="-1" aria-label="Architectural showcase: manicured Houston courtyard lawn">
-          <div class="stage__frame">
-            <div class="stage__layer stage__layer--back" data-depth="7">
-              <div class="media stage__media">
-                <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1400&q=85"
-                     alt="Modern architectural home at dusk framed by mature trees and a freshly manicured lawn"
-                     width="1400" height="1050" fetchpriority="high" decoding="async" />
-              </div>
-              <div class="stage__shade" aria-hidden="true"></div>
-            </div>
-
-            <div class="stage__layer stage__layer--mid" data-depth="15" aria-hidden="true">
-              <div class="stage__strip">
-                <img src="https://images.unsplash.com/photo-1558904541-efa843a96f01?auto=format&fit=crop&w=1200&q=85"
-                     alt="" width="1200" height="420" loading="lazy" decoding="async" />
-              </div>
-            </div>
-
-            <div class="stage__layer stage__layer--plaque" data-depth="28">
-              <div class="plaque">
-                <p class="plaque__kicker">Study No. 04</p>
-                <p class="plaque__title">The Courtyard<br />Lawn in Section</p>
-                <p class="plaque__meta">St. Augustine · Precision Edge · Houston, TX</p>
-              </div>
-            </div>
-
-            <div class="stage__layer stage__layer--star" data-depth="34">
-              <div class="stage__star">
-                <span class="stage__star-num">5.0</span>
-                <span class="stage__star-label">42 Google<br />reviews</span>
-              </div>
-            </div>
-          </div>
-
-          <span class="stage__corner stage__corner--tl" aria-hidden="true"></span>
-          <span class="stage__corner stage__corner--br" aria-hidden="true"></span>
-          <div class="stage__glow" aria-hidden="true"></div>
+      <!-- ELECTRIC SDF BRAND STAGE -->
+      <div class="stage-wrap electric-stage" data-aos="fade-up" data-aos-delay="140">
+        <div class="electric-logo" id="electricLogo" aria-label="Rodriguez Lawn & Landscape electric brand crest">
+          <svg id="brandCrest" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="256" height="256" role="img" aria-hidden="true" style="position:absolute;width:0;height:0;overflow:hidden;">
+            <!-- architectural roofline / blade -->
+            <path fill="#ffffff" d="M14 46 L64 16 L114 46 L106 46 L64 24 L22 46 Z" />
+            <!-- R -->
+            <path fill="#ffffff" fill-rule="evenodd" d="M30 54 V108 H42 V84 H54 C66 84 74 78 74 68 C74 58 66 54 54 54 Z M42 64 H52 C58 64 60 66 60 70 C60 74 58 76 52 76 H42 Z" />
+            <!-- L -->
+            <path fill="#ffffff" d="M86 54 V108 H116 V96 H98 V54 Z" />
+            <!-- botanical crest -->
+            <path fill="#ffffff" d="M64 112 C50 100 48 88 64 78 C80 88 78 100 64 112 Z" />
+            <path fill="#ffffff" d="M64 86 C56 78 56 68 64 60 C72 68 72 78 64 86 Z" />
+          </svg>
         </div>
-        <p class="stage__caption"><span>Architectural lawn study</span><span>Memorial · Houston</span></p>
+        <p class="stage__caption"><span>Rodriguez Lawn &amp; Landscape</span><span>Electric crest · Houston</span></p>
       </div>
     </div>
   </section>
@@ -638,5 +613,6 @@
 
 <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js" defer></script>
 <script src="assets/js/main.js" defer></script>
+<script src="assets/js/electric-stage.js" defer></script>
 </body>
 </html>
