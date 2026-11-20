@@ -1562,7 +1562,7 @@ section[id], #work {
 }
 
 @media (max-width: 400px) {
-  .stage__layer--plaque { display: none; }
+  .stage__corner--plaque { display: none; }
   .stage__star { top: 18px; }
 }
 
@@ -1597,10 +1597,14 @@ section[id], #work {
   position: relative;
   width: 100%;
   aspect-ratio: 1 / 1;
+  min-height: 280px;
   margin-inline: auto;
   touch-action: none;
   -webkit-tap-highlight-color: transparent;
   cursor: crosshair;
+}
+@media (min-width: 961px) {
+  .electric-logo { min-height: 360px; }
 }
 .electric-logo canvas {
   position: absolute;
