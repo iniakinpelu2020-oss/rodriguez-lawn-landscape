@@ -97,7 +97,7 @@
     else scene.style.transform = 'rotateX(-18deg) rotateY(12deg)';
   }
 
-  /* Canvas texture — high-DPI via devicePixelRatio + ResizeObserver */
+  /* Canvas — layered Houston lawn & garden scene, high-DPI via devicePixelRatio + ResizeObserver */
   if (canvas) {
     var ctx = canvas.getContext('2d');
     var dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -107,30 +107,168 @@
       var h = canvas.clientHeight;
       if (!w || !h) return;
       ctx.clearRect(0, 0, w, h);
-      // base
-      var g = ctx.createRadialGradient(w * 0.5, h * 0.5, 0, w * 0.5, h * 0.5, Math.max(w, h) * 0.7);
-      g.addColorStop(0, 'rgba(52,211,153,0.14)');
-      g.addColorStop(1, 'rgba(11,18,14,0)');
-      ctx.fillStyle = g;
-      ctx.fillRect(0, 0, w, h);
-      // turf stripes
+
+      // --- 1. Sky / horizon gradient band ---
+      var sky = ctx.createLinearGradient(0, 0, 0, h * 0.55);
+      sky.addColorStop(0, '#1a3a2c');
+      sky.addColorStop(0.55, '#0f2418');
+      sky.addColorStop(1, '#0B120E');
+      ctx.fillStyle = sky;
+      ctx.fillRect(0, 0, w, h * 0.55);
+      // horizon glow
+      var hg = ctx.createRadialGradient(w * 0.5, h * 0.5, 0, w * 0.5, h * 0.5, w * 0.6);
+      hg.addColorStop(0, 'rgba(226,192,125,0.18)');
+      hg.addColorStop(1, 'rgba(226,192,125,0)');
+      ctx.fillStyle = hg;
+      ctx.fillRect(0, 0, w, h * 0.55);
+
+      // --- 2. Distant tree line silhouette ---
       ctx.save();
-      ctx.globalAlpha = 0.22;
-      for (var i = 0; i < 18; i++) {
-        var x = (i / 18) * w;
-        ctx.fillStyle = i % 2 === 0 ? 'rgba(52,211,153,0.35)' : 'rgba(15,40,24,0.6)';
-        ctx.fillRect(x, h * 0.2, w / 18, h * 0.6);
+      ctx.fillStyle = '#0a1a12';
+      var baseY = h * 0.52;
+      ctx.beginPath();
+      ctx.moveTo(0, baseY);
+      // jagged canopy
+      var steps = 24;
+      for (var i = 0; i <= steps; i++) {
+        var x = (i / steps) * w;
+        var amp = (i % 3 === 0) ? 0.09 : (i % 2 === 0 ? 0.05 : 0.03);
+        var y = baseY - h * amp * (0.6 + 0.4 * Math.sin(i * 1.7));
+        ctx.lineTo(x, y);
+      }
+      ctx.lineTo(w, baseY + h * 0.04);
+      ctx.lineTo(w, h);
+      ctx.lineTo(0, h);
+      ctx.closePath();
+      ctx.fill();
+      ctx.restore();
+
+      // --- 3. Manicured striped emerald grass lawn ---
+      var lawnTop = h * 0.5;
+      var lawn = ctx.createLinearGradient(0, lawnTop, 0, h);
+      lawn.addColorStop(0, '#1f4a2e');
+      lawn.addColorStop(0.5, '#143322');
+      lawn.addColorStop(1, '#0a1f14');
+      ctx.fillStyle = lawn;
+      ctx.fillRect(0, lawnTop, w, h - lawnTop);
+      // mowing stripes
+      ctx.save();
+      ctx.globalAlpha = 0.32;
+      var stripeW = w / 16;
+      for (var s = 0; s < 16; s++) {
+        var sx = s * stripeW;
+        ctx.fillStyle = (s % 2 === 0) ? 'rgba(52,211,153,0.35)' : 'rgba(8,24,14,0.55)';
+        // perspective taper: stripes narrow toward horizon
+        var topY = lawnTop + (s % 2 === 0 ? 0 : 0);
+        ctx.beginPath();
+        ctx.moveTo(sx, lawnTop);
+        ctx.lineTo(sx + stripeW, lawnTop);
+        ctx.lineTo(sx + stripeW * 1.05, h);
+        ctx.lineTo(sx - stripeW * 0.05, h);
+        ctx.closePath();
+        ctx.fill();
       }
       ctx.restore();
-      // uplight glows
-      var glows = [[0.2, 0.75], [0.78, 0.72], [0.5, 0.82]];
-      glows.forEach(function (pt) {
-        var rg = ctx.createRadialGradient(w * pt[0], h * pt[1], 0, w * pt[0], h * pt[1], 60);
-        rg.addColorStop(0, 'rgba(226,192,125,0.45)');
+
+      // --- 4. Curved stone garden path ---
+      ctx.save();
+      ctx.fillStyle = 'rgba(226,192,125,0.18)';
+      ctx.strokeStyle = 'rgba(226,192,125,0.35)';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      var px = w * 0.52, py = h * 0.55;
+      ctx.moveTo(px, py);
+      ctx.bezierCurveTo(w * 0.58, h * 0.68, w * 0.48, h * 0.82, w * 0.5, h);
+      ctx.bezierCurveTo(w * 0.42, h * 0.82, w * 0.34, h * 0.68, w * 0.4, py);
+      ctx.closePath();
+      ctx.fill();
+      ctx.stroke();
+      // path stones
+      ctx.fillStyle = 'rgba(226,192,125,0.28)';
+      for (var k = 0; k < 7; k++) {
+        var t = k / 6;
+        var bx = w * 0.5 + (Math.sin(t * Math.PI) * 0.06 * w) * (t > 0.5 ? -1 : 1);
+        var by = h * 0.55 + t * h * 0.42;
+        ctx.beginPath();
+        ctx.ellipse(bx, by, 6 + t * 2, 4 + t, 0, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.restore();
+
+      // --- 5. Sculpted bush / hedge on one side ---
+      ctx.save();
+      var hedgeX = w * 0.12;
+      var hedgeY = h * 0.5;
+      // hedge body
+      ctx.fillStyle = '#0d2a1a';
+      ctx.beginPath();
+      ctx.ellipse(hedgeX + w * 0.06, hedgeY + h * 0.06, w * 0.11, h * 0.12, 0, 0, Math.PI * 2);
+      ctx.fill();
+      // hedge highlights
+      ctx.fillStyle = 'rgba(52,211,153,0.35)';
+      ctx.beginPath();
+      ctx.ellipse(hedgeX + w * 0.04, hedgeY, w * 0.07, h * 0.07, 0, 0, Math.PI * 2);
+      ctx.fill();
+      // second hedge
+      ctx.fillStyle = '#0a2216';
+      ctx.beginPath();
+      ctx.ellipse(hedgeX + w * 0.22, hedgeY + h * 0.08, w * 0.09, h * 0.1, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+
+      // --- 6. Small patio / planter accent ---
+      ctx.save();
+      var patX = w * 0.78, patY = h * 0.72;
+      ctx.fillStyle = 'rgba(226,192,125,0.12)';
+      ctx.strokeStyle = 'rgba(226,192,125,0.3)';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.roundRect(patX - w * 0.09, patY - h * 0.05, w * 0.18, h * 0.12, 8);
+      ctx.fill();
+      ctx.stroke();
+      // planter pot
+      ctx.fillStyle = '#1a1a1a';
+      ctx.beginPath();
+      ctx.roundRect(patX - 12, patY - 4, 24, 16, 4);
+      ctx.fill();
+      // planter plant
+      ctx.fillStyle = '#2a6a3f';
+      ctx.beginPath();
+      ctx.ellipse(patX, patY - 12, 14, 12, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = 'rgba(52,211,153,0.5)';
+      ctx.beginPath();
+      ctx.ellipse(patX - 4, patY - 16, 6, 5, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+
+      // --- 7. Warm golden sunlight glints ---
+      ctx.save();
+      var glintPts = [[0.3, 0.42], [0.72, 0.38], [0.55, 0.6], [0.85, 0.55]];
+      glintPts.forEach(function (pt) {
+        var rg = ctx.createRadialGradient(w * pt[0], h * pt[1], 0, w * pt[0], h * pt[1], 40);
+        rg.addColorStop(0, 'rgba(226,192,125,0.55)');
+        rg.addColorStop(0.4, 'rgba(226,192,125,0.18)');
         rg.addColorStop(1, 'rgba(226,192,125,0)');
         ctx.fillStyle = rg;
         ctx.fillRect(0, 0, w, h);
       });
+      ctx.restore();
+
+      // --- 8. Floating pollen / sparkle motes ---
+      ctx.save();
+      var motes = 28;
+      for (var m = 0; m < motes; m++) {
+        var mx = (m * 97 + 13) % w;
+        var my = (m * 53 + 7) % (h * 0.9) + h * 0.05;
+        var mr = 0.8 + (m % 3) * 0.6;
+        var alpha = 0.25 + (m % 5) * 0.12;
+        ctx.fillStyle = (m % 2 === 0) ? 'rgba(226,192,125,' + alpha + ')' : 'rgba(52,211,153,' + alpha + ')';
+        ctx.beginPath();
+        ctx.arc(mx, my, mr, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.restore();
     }
     function resizeCanvas() {
       dpr = Math.min(window.devicePixelRatio || 1, 2);
