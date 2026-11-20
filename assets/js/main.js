@@ -1,339 +1,293 @@
 /* ==========================================================================
    Rodriguez Lawn & Landscape — interaction layer
-   Curtain reveal · sticky header · 3D showcase tilt · AOS · estimate flow
+   Splash · native reveal · service catalog · estimate builder · drawer
    ========================================================================== */
 (function () {
   'use strict';
 
-  var root = document.documentElement;
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   /* ---------------------------------------------------------------
-     1. Startup curtain — auto-completes, never traps scroll
+     1. Brand splash — 1.0s, then cross-fade (CSS also auto-hides)
      --------------------------------------------------------------- */
-  var curtain = document.getElementById('curtain');
-  if (curtain) {
-    var dismissCurtain = function () {
-      if (curtain.classList.contains('is-done')) return;
-      curtain.classList.add('is-done');
-      window.setTimeout(function () {
-        if (curtain && curtain.parentNode) curtain.style.display = 'none';
-      }, 900);
-    };
-    // CSS animation removes it even if JS never runs; this adds the class early.
-    window.setTimeout(dismissCurtain, reduceMotion ? 0 : 1300);
-    curtain.addEventListener('transitionend', function () {
-      if (curtain.classList.contains('is-done')) curtain.style.display = 'none';
-    });
+  var splash = document.getElementById('splash');
+  if (splash) {
+    window.setTimeout(function () {
+      splash.classList.add('is-hidden');
+    }, 1000);
   }
 
   /* ---------------------------------------------------------------
-     2. Sticky header state + mobile navigation
+     2. Reveal on scroll — native IO + 500ms fail-safe.
+        Nothing is hidden unless JS arms it, and everything is
+        force-revealed after 500ms so content can never stay invisible.
      --------------------------------------------------------------- */
-  var header = document.getElementById('siteHeader');
-  if (header) {
+  var revealEls = Array.prototype.slice.call(document.querySelectorAll('[data-reveal]'));
+  function revealAll() {
+    revealEls.forEach(function (el) { el.classList.add('is-revealed'); });
+  }
+  if (revealEls.length) {
+    if (!reduceMotion && 'IntersectionObserver' in window) {
+      revealEls.forEach(function (el) { el.classList.add('reveal-armed'); });
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-revealed');
+            io.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.08, rootMargin: '0px 0px -6% 0px' });
+      revealEls.forEach(function (el) { io.observe(el); });
+      // Hard fail-safe: show everything after 500ms no matter what.
+      window.setTimeout(revealAll, 500);
+    } else {
+      revealAll();
+    }
+  }
+
+  /* ---------------------------------------------------------------
+     3. Sticky app bar shadow
+     --------------------------------------------------------------- */
+  var appbar = document.getElementById('appbar');
+  if (appbar) {
     var setScrolled = function () {
-      header.classList.toggle('is-scrolled', window.scrollY > 20);
+      appbar.style.boxShadow = window.scrollY > 8
+        ? '0 10px 24px -18px rgba(16,35,26,0.4)'
+        : 'none';
     };
     setScrolled();
     window.addEventListener('scroll', setScrolled, { passive: true });
+  }
 
-    var toggle = document.getElementById('navToggle');
-    var closeNav = function () {
-      header.classList.remove('is-open');
-      if (toggle) toggle.setAttribute('aria-expanded', 'false');
-    };
+  /* ---------------------------------------------------------------
+     4. Image fallbacks
+     --------------------------------------------------------------- */
+  document.addEventListener('error', function (e) {
+    var el = e.target;
+    if (!el || el.tagName !== 'IMG') return;
+    el.style.opacity = '0';
+    el.style.visibility = 'hidden';
+  }, true);
 
-    if (toggle) {
-      toggle.addEventListener('click', function () {
-        var open = header.classList.toggle('is-open');
-        toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+  /* ---------------------------------------------------------------
+     5. Service catalog + instant estimate builder
+     --------------------------------------------------------------- */
+  var cards = Array.prototype.slice.call(document.querySelectorAll('.svc-card'));
+  if (!cards.length) return;
+
+  var selected = {};
+  var yard = 'small';
+  var YARD_LABEL = { small: 'Small', standard: 'Standard', large: 'Large Lot' };
+  var YARD_MULT = { small: 1, standard: 1.15, large: 1.35 };
+
+  var bar = document.getElementById('estimateBar');
+  var barText = document.getElementById('barText');
+  var barBtn = document.getElementById('barBtn');
+
+  var drawer = document.getElementById('drawer');
+  var drawerList = document.getElementById('drawerList');
+  var drawerYard = document.getElementById('drawerYard');
+  var drawerTotal = document.getElementById('drawerTotal');
+  var drawerSms = document.getElementById('drawerSms');
+  var drawerWa = document.getElementById('drawerWa');
+
+  var searchInput = document.getElementById('svcSearch');
+  var filterButtons = Array.prototype.slice.call(document.querySelectorAll('.filter'));
+  var chipButtons = Array.prototype.slice.call(document.querySelectorAll('[data-chip-filter]'));
+  var yardButtons = Array.prototype.slice.call(document.querySelectorAll('.yard__opt'));
+  var activeFilter = 'all';
+
+  function cardById(id) {
+    for (var i = 0; i < cards.length; i++) {
+      if (cards[i].getAttribute('data-id') === id) return cards[i];
+    }
+    return null;
+  }
+  function priceOf(card) { return parseFloat(card.getAttribute('data-price')) || 0; }
+  function nameOf(card) { return card.getAttribute('data-name') || ''; }
+  function money(n) { return '$' + n.toFixed(2); }
+  function selectedCards() {
+    return cards.filter(function (c) { return selected[c.getAttribute('data-id')]; });
+  }
+  function count() { return selectedCards().length; }
+  function subtotal() {
+    return selectedCards().reduce(function (sum, c) { return sum + priceOf(c); }, 0);
+  }
+  function total() { return subtotal() * YARD_MULT[yard]; }
+
+  function buildMessage() {
+    var lines = ['Hi Rodriguez Lawn & Landscape — I would like a free estimate.', ''];
+    var picked = selectedCards();
+    if (picked.length) {
+      lines.push('Services:');
+      picked.forEach(function (c) {
+        lines.push('• ' + nameOf(c) + ' (' + money(priceOf(c)) + ')');
       });
     }
-
-    header.querySelectorAll('.nav a').forEach(function (link) {
-      link.addEventListener('click', closeNav);
-    });
-
-    document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape') closeNav();
-    });
-
-    document.addEventListener('click', function (e) {
-      if (!header.classList.contains('is-open')) return;
-      if (header.contains(e.target)) return;
-      closeNav();
-    });
+    lines.push('Yard size: ' + YARD_LABEL[yard]);
+    lines.push('Estimated total: ' + money(total()));
+    lines.push('');
+    lines.push('Sent from the website estimate builder.');
+    return lines.join('\n');
   }
 
-  /* ---------------------------------------------------------------
-     3. AOS scroll reveals
-     --------------------------------------------------------------- */
-  if (window.AOS) {
-    window.AOS.init({
-      duration: 820,
-      easing: 'ease-out-cubic',
-      offset: 80,
-      once: true,
-      disable: reduceMotion
-    });
+  function syncDrawerLinks() {
+    var msg = encodeURIComponent(buildMessage());
+    if (drawerSms) drawerSms.href = 'sms:+18325747414?&body=' + msg;
+    if (drawerWa) drawerWa.href = 'https://wa.me/18325747414?text=' + msg;
   }
-  root.classList.add('js-ready');
 
-  /* ---------------------------------------------------------------
-     4. 3D / parallax showcase stage
-     --------------------------------------------------------------- */
-  var stage = document.getElementById('stage');
-  if (stage && !reduceMotion) {
-    var current = { x: 0, y: 0 };
-    var target = { x: 0, y: 0 };
-    var rafId = null;
-    var touchStart = null;
-    var finePointer = window.matchMedia('(hover: hover) and (pointer: fine)');
+  function renderDrawer() {
+    if (!drawerList) return;
+    drawerList.innerHTML = '';
+    selectedCards().forEach(function (c) {
+      var li = document.createElement('li');
+      var label = document.createElement('strong');
+      label.textContent = nameOf(c);
+      var price = document.createElement('span');
+      price.textContent = money(priceOf(c));
+      li.appendChild(label);
+      li.appendChild(price);
+      drawerList.appendChild(li);
+    });
+    if (drawerYard) drawerYard.textContent = YARD_LABEL[yard];
+    if (drawerTotal) drawerTotal.textContent = money(total());
+    syncDrawerLinks();
+  }
 
-    var clamp = function (v, min, max) { return Math.min(max, Math.max(min, v)); };
-
-    var paint = function () {
-      current.x += (target.x - current.x) * 0.13;
-      current.y += (target.y - current.y) * 0.13;
-
-      stage.style.setProperty('--px', current.x.toFixed(4));
-      stage.style.setProperty('--py', current.y.toFixed(4));
-      stage.style.setProperty('--ry', (current.x * 7).toFixed(3) + 'deg');
-      stage.style.setProperty('--rx', (-current.y * 5.5).toFixed(3) + 'deg');
-
-      var settled =
-        Math.abs(target.x - current.x) < 0.0015 &&
-        Math.abs(target.y - current.y) < 0.0015 &&
-        Math.abs(target.x) < 0.0015 &&
-        Math.abs(target.y) < 0.0015;
-
-      if (settled) {
-        current.x = 0;
-        current.y = 0;
-        target.x = 0;
-        target.y = 0;
-        stage.style.setProperty('--px', '0');
-        stage.style.setProperty('--py', '0');
-        stage.style.setProperty('--ry', '0deg');
-        stage.style.setProperty('--rx', '0deg');
-        stage.classList.remove('is-tilting');
-        rafId = null;
-        return;
+  function render() {
+    cards.forEach(function (c) {
+      var id = c.getAttribute('data-id');
+      var btn = c.querySelector('.add-btn');
+      var on = !!selected[id];
+      c.classList.toggle('is-selected', on);
+      if (btn) {
+        btn.classList.toggle('is-added', on);
+        btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+        btn.textContent = on ? '✓ Added' : '+ Add';
       }
-      rafId = window.requestAnimationFrame(paint);
-    };
-
-    var kick = function () {
-      if (rafId === null) rafId = window.requestAnimationFrame(paint);
-    };
-
-    // Desktop cursor perspective tilt
-    stage.addEventListener('pointermove', function (e) {
-      if (e.pointerType === 'touch') {
-        if (!touchStart) return;
-        target.x = clamp((e.clientX - touchStart.x) / 78, -1, 1);
-        target.y = clamp((e.clientY - touchStart.y) / 90, -1, 1);
-        stage.classList.add('is-tilting');
-        kick();
-        return;
-      }
-      if (!finePointer.matches) return;
-      var rect = stage.getBoundingClientRect();
-      if (!rect.width || !rect.height) return;
-      target.x = clamp(((e.clientX - rect.left) / rect.width - 0.5) * 2, -1, 1);
-      target.y = clamp(((e.clientY - rect.top) / rect.height - 0.5) * 2, -1, 1);
-      stage.classList.add('is-tilting');
-      kick();
     });
 
-    stage.addEventListener('pointerleave', function (e) {
-      if (e.pointerType === 'touch') return;
-      target.x = 0;
-      target.y = 0;
-      kick();
-    });
-
-    // Mobile touch-drag (vertical page scroll stays available via touch-action: pan-y)
-    stage.addEventListener('pointerdown', function (e) {
-      if (e.pointerType !== 'touch') return;
-      touchStart = { x: e.clientX, y: e.clientY };
-    });
-
-    var endTouch = function () {
-      if (!touchStart) return;
-      touchStart = null;
-      target.x = 0;
-      target.y = 0;
-      kick();
-    };
-    stage.addEventListener('pointerup', endTouch);
-    stage.addEventListener('pointercancel', endTouch);
-    stage.addEventListener('pointerleave', function (e) {
-      if (e.pointerType === 'touch') endTouch();
-    });
-
-    // Keyboard users get a gentle invitation, then it settles.
-    stage.addEventListener('focus', function () {
-      target.x = 0.45;
-      target.y = -0.3;
-      stage.classList.add('is-tilting');
-      kick();
-      window.setTimeout(function () {
-        target.x = 0;
-        target.y = 0;
-        kick();
-      }, 1200);
-    });
-  }
-
-  /* ---------------------------------------------------------------
-     5. Image fallback handlers (styled crop-safe placeholders)
-     --------------------------------------------------------------- */
-  document.addEventListener(
-    'error',
-    function (e) {
-      var el = e.target;
-      if (!el || el.tagName !== 'IMG') return;
-      el.classList.add('img-failed');
-      var wrap = el.closest('.media');
-      if (wrap) wrap.classList.add('media--fallback');
-    },
-    true
-  );
-
-  /* ---------------------------------------------------------------
-     6. "Request Quote" → pre-select service in estimate form
-     --------------------------------------------------------------- */
-  var form = document.getElementById('estimateForm');
-  var formCard = document.querySelector('.form-card');
-  var serviceSelect = document.getElementById('service');
-  var serviceHint = document.getElementById('serviceHint');
-  var formSuccess = document.getElementById('formSuccess');
-  var formError = document.getElementById('formError');
-
-  document.querySelectorAll('[data-service]').forEach(function (btn) {
-    btn.addEventListener('click', function () {
-      var value = btn.getAttribute('data-service');
-      if (serviceSelect && value) {
-        serviceSelect.value = value;
-        var chosen = serviceSelect.options[serviceSelect.selectedIndex];
-        if (serviceHint && chosen) {
-          serviceHint.textContent = 'Pre-selected: ' + chosen.textContent;
-          serviceHint.hidden = false;
+    var n = count();
+    if (bar) {
+      if (n > 0) {
+        bar.hidden = false;
+        if (barText) {
+          barText.textContent = n + (n === 1 ? ' service · ' : ' services · ') + money(total());
         }
-        serviceSelect.dispatchEvent(new Event('change', { bubbles: true }));
+        // next frame so the transition runs
+        window.requestAnimationFrame(function () { bar.classList.add('is-shown'); });
+      } else {
+        bar.classList.remove('is-shown');
+        bar.hidden = true;
       }
-      var targetSection = document.getElementById('estimate');
-      if (targetSection) {
-        targetSection.scrollIntoView({
-          behavior: reduceMotion ? 'auto' : 'smooth',
-          block: 'start'
-        });
-      }
-      if (formCard) {
-        formCard.classList.remove('is-prompted');
-        // restart the highlight animation
-        void formCard.offsetWidth;
-        formCard.classList.add('is-prompted');
-        window.setTimeout(function () {
-          var nameField = document.getElementById('fullName');
-          if (nameField && window.innerWidth > 960) nameField.focus({ preventScroll: true });
-        }, reduceMotion ? 0 : 620);
+    }
+    renderDrawer();
+  }
+
+  function toggleService(id) {
+    if (!cardById(id)) return;
+    selected[id] = !selected[id];
+    render();
+  }
+
+  cards.forEach(function (card) {
+    var btn = card.querySelector('.add-btn');
+    if (btn) {
+      btn.addEventListener('click', function () {
+        toggleService(card.getAttribute('data-id'));
+      });
+    }
+  });
+
+  /* Search + category filters */
+  function applyFilters() {
+    var q = searchInput ? searchInput.value.toLowerCase().trim() : '';
+    cards.forEach(function (card) {
+      var cat = card.getAttribute('data-category');
+      var text = (card.textContent || '').toLowerCase();
+      var matchCat = activeFilter === 'all' || cat === activeFilter;
+      var matchQuery = !q || text.indexOf(q) !== -1;
+      card.style.display = matchCat && matchQuery ? '' : 'none';
+    });
+  }
+
+  filterButtons.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      activeFilter = btn.getAttribute('data-filter') || 'all';
+      filterButtons.forEach(function (b) {
+        var on = b === btn;
+        b.classList.toggle('is-active', on);
+        b.setAttribute('aria-selected', on ? 'true' : 'false');
+      });
+      applyFilters();
+    });
+  });
+
+  chipButtons.forEach(function (chip) {
+    chip.addEventListener('click', function () {
+      var target = chip.getAttribute('data-chip-filter');
+      var match = null;
+      filterButtons.forEach(function (b) {
+        if (b.getAttribute('data-filter') === target) match = b;
+      });
+      if (match) match.click();
+      var catalog = document.getElementById('catalog');
+      if (catalog) {
+        catalog.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
       }
     });
   });
 
-  /* ---------------------------------------------------------------
-     7. Estimate form → instant SMS / WhatsApp quote
-     --------------------------------------------------------------- */
-  if (form) {
-    var SERVICE_LABELS = {
-      'lawn-maintenance': 'Weekly & Bi-Weekly Precision Lawn Maintenance',
-      'landscape-design': 'Custom Landscape Design & Planting',
-      'sod-installation': 'Fresh Sod Installation & Turf Restoration',
-      'mulching-cleanup': 'Mulching, Bed Edging & Seasonal Cleanups',
-      'tree-shrub-trimming': 'Tree & Shrub Trimming & Hedge Sculpting',
-      'hardscaping-drainage': 'Hardscaping, Pavers & Drainage Solutions',
-      'multiple': 'Multiple services / full yard transformation',
-      'unsure': 'Not sure yet — please advise'
-    };
+  if (searchInput) {
+    searchInput.addEventListener('input', applyFilters);
+  }
 
-    var value = function (id) {
-      var el = document.getElementById(id);
-      return el ? el.value.trim() : '';
-    };
-
-    form.addEventListener('submit', function (e) {
-      e.preventDefault();
-      if (formError) formError.hidden = true;
-
-      if (!form.checkValidity()) {
-        if (formError) {
-          formError.textContent =
-            'Please add your name, phone number, property address and the service you need so we can quote accurately.';
-          formError.hidden = false;
-        }
-        if (typeof form.reportValidity === 'function') form.reportValidity();
-        return;
-      }
-
-      var name = value('fullName');
-      var phone = value('phone');
-      var address = value('address');
-      var service = SERVICE_LABELS[value('service')] || value('service');
-      var notes = value('notes');
-
-      var message =
-        'Hi Rodriguez Lawn & Landscape — I would like a free estimate.\n\n' +
-        'Name: ' + name + '\n' +
-        'Phone: ' + phone + '\n' +
-        'Property: ' + address + '\n' +
-        'Service: ' + service + '\n' +
-        'Notes: ' + (notes || '—') + '\n\n' +
-        'Sent from the website estimate form.';
-
-      var encoded = encodeURIComponent(message);
-      var smsLink = document.getElementById('successSms');
-      var waLink = document.getElementById('successWa');
-      if (smsLink) smsLink.href = 'sms:+18325747414?&body=' + encoded;
-      if (waLink) waLink.href = 'https://wa.me/18325747414?text=' + encoded;
-
-      var firstName = name.split(/\s+/)[0];
-      var successName = document.getElementById('successName');
-      var successSummary = document.getElementById('successSummary');
-      if (successName) successName.textContent = firstName || 'neighbor';
-      if (successSummary) {
-        successSummary.textContent =
-          'Your ' + service.toLowerCase() + ' request for ' + address +
-          ' is ready. Send it by text or WhatsApp and we will reply with a fixed, itemised quote — usually the same business day.';
-      }
-
-      form.hidden = true;
-      if (formSuccess) {
-        formSuccess.hidden = false;
-        formSuccess.scrollIntoView({
-          behavior: reduceMotion ? 'auto' : 'smooth',
-          block: 'center'
-        });
-      }
-    });
-
-    var resetBtn = document.getElementById('resetForm');
-    if (resetBtn) {
-      resetBtn.addEventListener('click', function () {
-        if (formSuccess) formSuccess.hidden = true;
-        form.hidden = false;
-        if (serviceHint) serviceHint.hidden = true;
-        var first = document.getElementById('fullName');
-        if (first) first.focus({ preventScroll: true });
+  /* Yard size stepper */
+  yardButtons.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      yard = btn.getAttribute('data-yard') || 'small';
+      yardButtons.forEach(function (b) {
+        var on = b === btn;
+        b.classList.toggle('is-active', on);
+        b.setAttribute('aria-pressed', on ? 'true' : 'false');
       });
-    }
+      render();
+    });
+  });
+
+  /* Booking drawer */
+  function openDrawer() {
+    if (!drawer || count() === 0) return;
+    renderDrawer();
+    drawer.hidden = false;
+    window.requestAnimationFrame(function () { drawer.classList.add('is-open'); });
+    document.body.style.overflow = 'hidden';
+    var closeBtn = drawer.querySelector('.drawer__close');
+    if (closeBtn) closeBtn.focus({ preventScroll: true });
+  }
+  function closeDrawer() {
+    if (!drawer) return;
+    drawer.classList.remove('is-open');
+    document.body.style.overflow = '';
+    window.setTimeout(function () { drawer.hidden = true; }, 350);
+  }
+
+  if (barBtn) barBtn.addEventListener('click', openDrawer);
+  if (drawer) {
+    drawer.querySelectorAll('[data-close-drawer]').forEach(function (el) {
+      el.addEventListener('click', closeDrawer);
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && !drawer.hidden) closeDrawer();
+    });
   }
 
   /* ---------------------------------------------------------------
-     8. Footer year
+     6. Footer year
      --------------------------------------------------------------- */
   var year = document.getElementById('year');
   if (year) year.textContent = String(new Date().getFullYear());
+
+  render();
 })();
