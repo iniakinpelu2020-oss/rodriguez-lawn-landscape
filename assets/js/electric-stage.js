@@ -299,30 +299,186 @@
     return null;
   }
 
+  /* ---------- 2D canvas fallback ---------- */
+  function initFallback2D() {
+    try { while (container.firstChild) container.removeChild(container.firstChild); } catch (e) { /* ignore */ }
+    var c = document.createElement('canvas');
+    container.appendChild(c);
+    var ctx = null;
+    try { ctx = c.getContext('2d', { alpha: true }); } catch (e) { ctx = null; }
+    if (!ctx) {
+      if (svg) { svg.style.position = 'absolute'; svg.style.inset = '0'; svg.style.width = '100%'; svg.style.height = '100%'; svg.style.display = 'block'; }
+      return;
+    }
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    function resize() {
+      var w = Math.max(1, container.clientWidth || 280);
+      var h = Math.max(1, container.clientHeight || 280);
+      c.width = Math.round(w * dpr);
+      c.height = Math.round(h * dpr);
+      c.style.width = '100%';
+      c.style.height = '100%';
+    }
+    resize();
+    try { var ro = new ResizeObserver(resize); ro.observe(container); } catch (e) { /* ignore */ }
+    var pointer = { x: 0, y: 0, over: false };
+    function setPointer(e) {
+      try {
+        var r = container.getBoundingClientRect();
+        pointer.x = (e.clientX - r.left) * dpr;
+        pointer.y = (e.clientY - r.top) * dpr;
+        pointer.over = true;
+      } catch (err) { /* ignore */ }
+    }
+    container.addEventListener('pointermove', setPointer);
+    container.addEventListener('pointerdown', setPointer);
+    container.addEventListener('pointerleave', function () { pointer.over = false; });
+    container.addEventListener('pointercancel', function () { pointer.over = false; });
+    container.addEventListener('touchmove', function (e) {
+      if (e.touches && e.touches[0]) setPointer(e.touches[0]);
+    }, { passive: true });
+
+    var sparks = [];
+    var t = 0, last = performance.now();
+    function frame(now) {
+      var dt = Math.min(0.05, Math.max(0, (now - last) / 1000));
+      last = now;
+      t += dt * 2.2;
+      var w = c.width, h = c.height;
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+      ctx.clearRect(0, 0, w, h);
+
+      var cx = w / 2, cy = h / 2;
+      var size = Math.min(w, h) * 0.72;
+
+      // backdrop glow
+      var grd = ctx.createRadialGradient(cx, cy, 0, cx, cy, size * 0.7);
+      grd.addColorStop(0, 'rgba(74, 222, 128, 0.18)');
+      grd.addColorStop(0.5, 'rgba(197, 160, 89, 0.12)');
+      grd.addColorStop(1, 'rgba(0,0,0,0)');
+      ctx.fillStyle = grd;
+      ctx.fillRect(0, 0, w, h);
+
+      // draw crest image (white shape) with glow
+      if (image && image.complete && image.naturalWidth) {
+        ctx.save();
+        ctx.translate(cx, cy);
+        var sc = size / Math.max(image.width, image.height);
+        ctx.scale(sc, sc);
+        ctx.shadowColor = '#F6E2B3';
+        ctx.shadowBlur = 36 * dpr;
+        ctx.globalCompositeOperation = 'source-over';
+        ctx.drawImage(image, -image.width / 2, -image.height / 2);
+        ctx.restore();
+      }
+
+      // multi-layered animated plasma strokes
+      for (var layer = 0; layer < 3; layer++) {
+        var phase = t * (1.0 + layer * 0.37) + layer * 1.7;
+        var radius = size * (0.32 + layer * 0.09) + Math.sin(phase) * size * 0.04;
+        var color = layer === 1 ? '#4ADE80' : '#F6E2B3';
+        ctx.save();
+        ctx.translate(cx, cy);
+        ctx.rotate(phase * 0.4);
+        ctx.beginPath();
+        for (var a = 0; a <= 64; a++) {
+          var ang = (a / 64) * Math.PI * 2;
+          var r = radius + Math.sin(ang * 5 + phase) * size * 0.03;
+          var x = Math.cos(ang) * r;
+          var y = Math.sin(ang) * r;
+          if (a === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+        }
+        ctx.closePath();
+        ctx.lineWidth = (2.2 - layer * 0.5) * dpr;
+        ctx.strokeStyle = color;
+        ctx.shadowColor = color;
+        ctx.shadowBlur = (18 + layer * 6) * dpr;
+        ctx.globalAlpha = 0.55 - layer * 0.12;
+        ctx.stroke();
+        ctx.restore();
+      }
+
+      // crackling spark arcs
+      if (Math.random() < 0.35) {
+        sparks.push({
+          x0: cx + (Math.random() - 0.5) * size,
+          y0: cy + (Math.random() - 0.5) * size,
+          x1: cx + (Math.random() - 0.5) * size,
+          y1: cy + (Math.random() - 0.5) * size,
+          born: t,
+          life: 0.3 + Math.random() * 0.4
+        });
+      }
+      for (var i = sparks.length - 1; i >= 0; i--) {
+        var sp = sparks[i];
+        var age = t - sp.born;
+        if (age > sp.life) { sparks.splice(i, 1); continue; }
+        var k = 1 - age / sp.life;
+        ctx.save();
+        ctx.globalAlpha = k * 0.9;
+        ctx.lineWidth = 1.6 * dpr * k;
+        ctx.strokeStyle = Math.random() < 0.5 ? '#F6E2B3' : '#4ADE80';
+        ctx.shadowColor = ctx.strokeStyle;
+        ctx.shadowBlur = 14 * dpr;
+        ctx.beginPath();
+        var mx = (sp.x0 + sp.x1) / 2 + (Math.random() - 0.5) * size * 0.15;
+        var my = (sp.y0 + sp.y1) / 2 + (Math.random() - 0.5) * size * 0.15;
+        ctx.moveTo(sp.x0, sp.y0);
+        ctx.quadraticCurveTo(mx, my, sp.x1, sp.y1);
+        ctx.stroke();
+        ctx.restore();
+      }
+
+      // pointer/touch hover glow
+      if (pointer.over) {
+        var pg = ctx.createRadialGradient(pointer.x, pointer.y, 0, pointer.x, pointer.y, size * 0.45);
+        pg.addColorStop(0, 'rgba(246, 226, 179, 0.35)');
+        pg.addColorStop(0.4, 'rgba(74, 222, 128, 0.18)');
+        pg.addColorStop(1, 'rgba(0,0,0,0)');
+        ctx.fillStyle = pg;
+        ctx.fillRect(0, 0, w, h);
+      }
+
+      requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
+  }
+
   /* ---------- WebGL2 setup ---------- */
+  var canvas = document.createElement('canvas');
+  container.appendChild(canvas);
   var gl = null;
   try {
-    gl = container.appendChild(document.createElement('canvas')).getContext('webgl2', {
-      alpha: true, premultipliedAlpha: true, antialias: false
-    });
+    gl = canvas.getContext('webgl2', { alpha: true, premultipliedAlpha: true, antialias: false });
   } catch (e) { gl = null; }
-
-  // move canvas to fill container and create it properly
-  var canvas = document.createElement('canvas');
-  // remove the probe canvas if any
-  while (container.firstChild) container.removeChild(container.firstChild);
-  if (!gl) {
-    try { gl = canvas.getContext('webgl2', { alpha: true, premultipliedAlpha: true, antialias: false }); } catch (e) { gl = null; }
-  }
   if (!gl) {
     // graceful fallback: show the SVG
     if (svg) { svg.style.position = 'absolute'; svg.style.inset = '0'; svg.style.width = '100%'; svg.style.height = '100%'; svg.style.display = 'block'; }
+    try { initFallback2D(); } catch (e) { /* ignore */ }
     return;
   }
-  container.appendChild(canvas);
   gl.clearColor(0, 0, 0, 0);
 
   var floatLinear = !!gl.getExtension('OES_texture_float_linear');
+  var colorBufferFloat = !!gl.getExtension('EXT_color_buffer_float');
+
+  // If float textures aren't reliably supported, fall back to the 2D canvas renderer.
+  if (!floatLinear || !colorBufferFloat) {
+    try {
+      while (container.firstChild) container.removeChild(container.firstChild);
+    } catch (e) { /* ignore */ }
+    // defer until image is available
+    if (image && image.complete && image.naturalWidth) {
+      try { initFallback2D(); } catch (e) { /* ignore */ }
+    } else {
+      var prevOnload = image.onload;
+      image.onload = function () {
+        try { if (prevOnload) prevOnload(); } catch (e) { /* ignore */ }
+        try { initFallback2D(); } catch (e) { /* ignore */ }
+      };
+    }
+    return;
+  }
 
   function createFieldTexture(w, h) {
     var tex = gl.createTexture();
@@ -625,17 +781,29 @@
   // load SVG into image
   var image = new Image();
   image.decoding = 'async';
-  image.onload = function () {
+  image.width = 400;
+  image.height = 400;
+  function onImageReady() {
     try {
+      if (svg) { svg.setAttribute('width', '400'); svg.setAttribute('height', '400'); }
       var traced = traceShape(image);
       if (traced) shapeRef = traced;
     } catch (e) { /* ignore */ }
-  };
+    try { applyResize(); } catch (e) { /* ignore */ }
+    try { start(); } catch (e) { /* ignore */ }
+  }
+  image.onload = onImageReady;
+  image.onerror = function () { try { initFallback2D(); } catch (e) { /* ignore */ } };
   if (svg) {
     try {
+      svg.setAttribute('width', '400');
+      svg.setAttribute('height', '400');
       image.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(new XMLSerializer().serializeToString(svg));
+      if (typeof image.decode === 'function') {
+        image.decode().then(onImageReady).catch(function () { /* onload handles it */ });
+      }
     } catch (e) {
-      // fallback: hide nothing
+      try { initFallback2D(); } catch (err) { /* ignore */ }
     }
   }
 
@@ -652,8 +820,13 @@
     }
     gl.bindTexture(gl.TEXTURE_2D, slot.fieldTex);
     gl.texImage2D(gl.TEXTURE_2D, 0, gl.R32F, next.width, next.height, 0, gl.RED, gl.FLOAT, next.field);
+
     gl.bindTexture(gl.TEXTURE_2D, slot.glowTex);
     gl.texImage2D(gl.TEXTURE_2D, 0, gl.RG32F, next.glowWidth, next.glowHeight, 0, gl.RG, gl.FLOAT, next.glow);
+    // If the GPU rejected the float upload, switch to the 2D fallback.
+    if (gl.getError() !== gl.NO_ERROR) {
+      try { initFallback2D(); } catch (e) { /* ignore */ }
+    }
     slot.shape = next;
   }
 
@@ -668,8 +841,8 @@
   }
 
   function applyResize() {
-    width = Math.max(1, container.clientWidth);
-    height = Math.max(1, container.clientHeight);
+    width = Math.max(1, container.clientWidth || 280);
+    height = Math.max(1, container.clientHeight || 280);
     var dpr = Math.min(window.devicePixelRatio || 1, 2, Math.sqrt(PIXEL_BUDGET / (width * height)));
     canvas.width = Math.round(width * dpr);
     canvas.height = Math.round(height * dpr);
