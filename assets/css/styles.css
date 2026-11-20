@@ -1562,7 +1562,7 @@ section[id], #work {
 }
 
 @media (max-width: 400px) {
-  .stage__layer--plaque { display: none; }
+  .stage__corner--plaque { display: none; }
   .stage__star { top: 18px; }
 }
 
