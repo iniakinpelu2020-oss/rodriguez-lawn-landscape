@@ -3,27 +3,30 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<title>Rodriguez Lawn &amp; Landscape — Manicured Houston Lawns</title>
+<title>Rodriguez Lawn &amp; Landscape — Architectural Lawn Care &amp; Sculpted Houston Landscapes</title>
 <meta name="description" content="Rodriguez Lawn &amp; Landscape delivers precision weekly lawn maintenance, landscape design, sod installation, mulching and hardscaping across Houston, TX. 5.0★ rated, 42 five-star reviews. Call or text +1 832-574-7414 for a free estimate." />
-<meta name="theme-color" content="#16422C" />
+<meta name="theme-color" content="#0B120E" />
 <meta property="og:type" content="website" />
 <meta property="og:title" content="Rodriguez Lawn &amp; Landscape — Houston, TX" />
-<meta property="og:description" content="Manicured Houston lawns, scheduled in seconds. 5.0★ from 42 five-star Google reviews. Free, transparent estimates." />
+<meta property="og:description" content="Architectural Lawn Care &amp; Sculpted Houston Landscapes. 5.0★ from 42 five-star Google reviews." />
 <meta property="og:locale" content="en_US" />
 
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='32' fill='%2316422C'/%3E%3Ctext x='32' y='40' font-family='Helvetica,Arial,sans-serif' font-size='22' font-weight='700' fill='%23FFFFFF' text-anchor='middle'%3ERL%3C/text%3E%3C/svg%3E" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='32' fill='%230B120E'/%3E%3Ctext x='32' y='40' font-family='Georgia,serif' font-size='22' font-weight='700' fill='%23E2C07D' text-anchor='middle'%3ERL%3C/text%3E%3C/svg%3E" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link rel="preconnect" href="https://images.unsplash.com" />
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="assets/css/styles.css" />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="./assets/css/styles.css" />
+<link rel="stylesheet" href="./styles.css" />
+
 </head>
 <body>
 
 <!-- ================= BRAND SPLASH ================= -->
 <div class="splash" id="splash" aria-hidden="true">
   <div class="splash__crest">RL</div>
+  <div class="splash__word">RODRIGUEZ LAWN &amp; LANDSCAPE</div>
 </div>
 
 <a class="skip-link" href="#main">Skip to content</a>
@@ -50,271 +53,281 @@
 
 <main id="main">
 
-  <!-- ================= HERO ================= -->
-  <section class="hero" id="top" aria-labelledby="heroTitle">
-    <div class="shell hero__inner">
+<!-- ================= HERO ================= -->
+<section class="hero" id="top" aria-labelledby="heroTitle">
+  <div class="hero__watermark" aria-hidden="true">RODRIGUEZ</div>
+  <div class="shell hero__inner">
+    <div class="hero__stage" id="heroStage" touch-action="pan-y" aria-label="Interactive 3D lawn diorama. Drag to rotate.">
+      <div class="stage__scene" id="heroScene">
+        <canvas class="stage__canvas" id="stageCanvas" aria-hidden="true"></canvas>
+        <div class="stage__ground" aria-hidden="true"></div>
+        <div class="stage__turf" aria-hidden="true"></div>
+        <div class="stage__walk" aria-hidden="true"></div>
+        <div class="stage__agave stage__agave--a" aria-hidden="true"></div>
+        <div class="stage__agave stage__agave--b" aria-hidden="true"></div>
+        <div class="stage__palm" aria-hidden="true"></div>
+        <div class="stage__light stage__light--a" aria-hidden="true"></div>
+        <div class="stage__light stage__light--b" aria-hidden="true"></div>
+        <div class="stage__light stage__light--c" aria-hidden="true"></div>
+      </div>
+      <div class="stage__pills">
+        <span class="telemetry">HOUSTON, TX · 5.0★ RATED</span>
+        <span class="telemetry">42 FIVE-STAR REVIEWS</span>
+        <span class="telemetry">WEEKLY &amp; BI-WEEKLY CARE</span>
+      </div>
+    </div>
+
+    <div class="hero__copy">
       <p class="hero__eyebrow" data-reveal>Houston · Lawn &amp; Landscape</p>
-      <h1 id="heroTitle" data-reveal>Manicured Houston lawns, <span>scheduled in seconds.</span></h1>
+      <h1 id="heroTitle" data-reveal>Architectural Lawn Care &amp; <span>Sculpted Houston Landscapes.</span></h1>
       <p class="hero__sub" data-reveal>
-        Weekly mowing, clean architectural edging, seasonal mulching, premium sod and bespoke
-        hardscaping — delivered by a punctual, owner-run crew with transparent, upfront pricing
-        across Greater Houston.
+        Precision weekly maintenance, clean architectural edging, seasonal mulching, premium sod and bespoke
+        hardscaping — delivered by a punctual, owner-run crew with transparent, upfront pricing across Greater Houston.
       </p>
       <div class="hero__actions" data-reveal>
-        <a class="btn btn--primary btn--lg" href="#catalog">
-          Get started
+        <a class="btn btn--gold btn--lg" href="#services">
+          Get Instant Estimate
           <svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 12h15m0 0-5.5-5.5M19 12l-5.5 5.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </a>
-        <a class="btn btn--soft btn--lg" href="tel:+18325747414">Call / Text</a>
-      </div>
-      <div class="hero__chips" data-reveal aria-label="Quick services">
-        <button class="chip" type="button" data-chip-filter="lawn">Weekly Mowing</button>
-        <button class="chip" type="button" data-chip-filter="landscaping">Landscape Design</button>
-        <button class="chip" type="button" data-chip-filter="lawn">Sod Installation</button>
-        <button class="chip" type="button" data-chip-filter="hardscape">Mulch &amp; Cleanup</button>
-        <button class="chip" type="button" data-chip-filter="landscaping">Trimming</button>
-        <button class="chip" type="button" data-chip-filter="hardscape">Hardscaping</button>
+        <a class="btn btn--glass btn--lg" href="tel:+18325747414">
+          Call / Text +1 832-574-7414
+        </a>
       </div>
       <p class="hero__trust" data-reveal><span aria-hidden="true">★★★★★</span> 5.0 · 42 five-star Google reviews</p>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- ================= SERVICE CATALOG & ESTIMATE BUILDER ================= -->
-  <section class="section catalog" id="catalog" aria-labelledby="catalogTitle">
-    <div class="shell">
-      <div class="section__head" data-reveal>
-        <p class="eyebrow">Build your yard plan</p>
-        <h2 id="catalogTitle">Pick your services. <span>See your estimate instantly.</span></h2>
-        <p class="section__lede">
-          Add what your yard needs, choose a lot size, and send the quote to us by text or WhatsApp.
-          Every price is a starting point, confirmed after a quick walkthrough.
-        </p>
+<!-- ================= SERVICE CAROUSEL ================= -->
+<section class="section services" id="services" aria-labelledby="servicesTitle">
+  <div class="shell">
+    <div class="section__head section__head--center" data-reveal>
+      <p class="eyebrow">Spatial service selector</p>
+      <h2 id="servicesTitle">Bring a service into <span>center stage.</span></h2>
+      <p class="section__lede">
+        Swipe or tap to illuminate each service. Adjust lot size and watch the estimate recalculate live.
+      </p>
+    </div>
+
+    <div class="carousel" id="carousel">
+      <div class="carousel__stage">
+        <button class="carousel__nav carousel__nav--prev" id="carPrev" type="button" aria-label="Previous service">‹</button>
+        <div class="carousel__viewport" id="carViewport">
+          <article class="car-slide is-active" data-index="0">
+            <div class="car-slide__media">
+              <img src="https://images.unsplash.com/photo-1558904541-efa843a96f01?auto=format&fit=crop&w=1200&q=85" alt="Precision weekly lawn mowing and edging" width="1200" height="800" loading="eager" decoding="async" />
+            </div>
+            <div class="car-slide__body">
+              <p class="car-slide__cat">Weekly Lawn Care</p>
+              <h3>Precision Weekly / Bi-Weekly Lawn Mowing &amp; Edging</h3>
+              <p class="car-slide__desc">Mowing at the right height, string-trimmed borders and blown-clean hardscape every visit.</p>
+              <div class="car-slide__price">from <strong>$55</strong></div>
+              <div class="car-slide__stepper">
+                <span>Lot size</span>
+                <div class="stepper" data-service="mowing">
+                  <button type="button" data-step="-1" aria-label="Decrease lot size">−</button>
+                  <span class="stepper__val" data-stepper-val>Small</span>
+                  <button type="button" data-step="1" aria-label="Increase lot size">+</button>
+                </div>
+              </div>
+              <button class="btn btn--gold car-add" type="button" data-add="mowing" aria-pressed="false">+ Add to estimate</button>
+            </div>
+          </article>
+          <article class="car-slide" data-index="1">
+            <div class="car-slide__media">
+              <img src="https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?auto=format&fit=crop&w=1200&q=85" alt="Custom landscape bed design and planting" width="1200" height="800" loading="lazy" decoding="async" />
+            </div>
+            <div class="car-slide__body">
+              <p class="car-slide__cat">Landscape Design</p>
+              <h3>Custom Landscape Bed Design &amp; Planting</h3>
+              <p class="car-slide__desc">Drawn layouts and plant selection built for Houston heat and clay soil.</p>
+              <div class="car-slide__price">from <strong>$249</strong></div>
+              <div class="car-slide__stepper">
+                <span>Lot size</span>
+                <div class="stepper" data-service="design">
+                  <button type="button" data-step="-1" aria-label="Decrease lot size">−</button>
+                  <span class="stepper__val" data-stepper-val>Small</span>
+                  <button type="button" data-step="1" aria-label="Increase lot size">+</button>
+                </div>
+              </div>
+              <button class="btn btn--gold car-add" type="button" data-add="design" aria-pressed="false">+ Add to estimate</button>
+            </div>
+          </article>
+          <article class="car-slide" data-index="2">
+            <div class="car-slide__media">
+              <img src="https://images.unsplash.com/photo-1598902108854-10e335adac99?auto=format&fit=crop&w=1200&q=85" alt="Premium hardwood mulch and stone edging" width="1200" height="800" loading="lazy" decoding="async" />
+            </div>
+            <div class="car-slide__body">
+              <p class="car-slide__cat">Mulch &amp; Bed Refresh</p>
+              <h3>Premium Hardwood Mulch &amp; Stone Edging</h3>
+              <p class="car-slide__desc">Hand-cut bed edges, the right mulch depth and a full seasonal refresh.</p>
+              <div class="car-slide__price">from <strong>$175</strong></div>
+              <div class="car-slide__stepper">
+                <span>Lot size</span>
+                <div class="stepper" data-service="mulch">
+                  <button type="button" data-step="-1" aria-label="Decrease lot size">−</button>
+                  <span class="stepper__val" data-stepper-val>Small</span>
+                  <button type="button" data-step="1" aria-label="Increase lot size">+</button>
+                </div>
+              </div>
+              <button class="btn btn--gold car-add" type="button" data-add="mulch" aria-pressed="false">+ Add to estimate</button>
+            </div>
+          </article>
+          <article class="car-slide" data-index="3">
+            <div class="car-slide__media">
+              <img src="https://images.unsplash.com/photo-1416879595882-3373a0480b5b?auto=format&fit=crop&w=1200&q=85" alt="Ornamental shrub hedge and palm pruning" width="1200" height="800" loading="lazy" decoding="async" />
+            </div>
+            <div class="car-slide__body">
+              <p class="car-slide__cat">Tree &amp; Shrub Trim</p>
+              <h3>Ornamental Shrub, Hedge &amp; Palm Pruning</h3>
+              <p class="car-slide__desc">Structural pruning and hedges squared to a line — crisp without stripping the plant.</p>
+              <div class="car-slide__price">from <strong>$95</strong></div>
+              <div class="car-slide__stepper">
+                <span>Lot size</span>
+                <div class="stepper" data-service="trim">
+                  <button type="button" data-step="-1" aria-label="Decrease lot size">−</button>
+                  <span class="stepper__val" data-stepper-val>Small</span>
+                  <button type="button" data-step="1" aria-label="Increase lot size">+</button>
+                </div>
+              </div>
+              <button class="btn btn--gold car-add" type="button" data-add="trim" aria-pressed="false">+ Add to estimate</button>
+            </div>
+          </article>
+          <article class="car-slide" data-index="4">
+            <div class="car-slide__media">
+              <img src="https://images.unsplash.com/photo-1501004318641-b39e6451bec6?auto=format&fit=crop&w=1200&q=85" alt="Full yard leaf and storm debris reset" width="1200" height="800" loading="lazy" decoding="async" />
+            </div>
+            <div class="car-slide__body">
+              <p class="car-slide__cat">Seasonal Cleanup</p>
+              <h3>Full Yard Leaf &amp; Storm Debris Reset</h3>
+              <p class="car-slide__desc">Leaf removal, debris haul-off and a full seasonal reset of the grounds.</p>
+              <div class="car-slide__price">from <strong>$135</strong></div>
+              <div class="car-slide__stepper">
+                <span>Lot size</span>
+                <div class="stepper" data-service="cleanup">
+                  <button type="button" data-step="-1" aria-label="Decrease lot size">−</button>
+                  <span class="stepper__val" data-stepper-val>Small</span>
+                  <button type="button" data-step="1" aria-label="Increase lot size">+</button>
+                </div>
+              </div>
+              <button class="btn btn--gold car-add" type="button" data-add="cleanup" aria-pressed="false">+ Add to estimate</button>
+            </div>
+          </article>
+        </div>
+        <button class="carousel__nav carousel__nav--next" id="carNext" type="button" aria-label="Next service">›</button>
       </div>
 
-      <div class="catalog__tools" data-reveal>
-        <label class="search" for="svcSearch">
-          <svg class="search__ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="m16 16 4 4" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
-          <input id="svcSearch" type="search" placeholder="Search services…" autocomplete="off" />
-        </label>
-        <div class="filters" role="tablist" aria-label="Service categories">
-          <button class="filter is-active" type="button" data-filter="all" role="tab" aria-selected="true">All</button>
-          <button class="filter" type="button" data-filter="lawn" role="tab" aria-selected="false">Lawn Care</button>
-          <button class="filter" type="button" data-filter="landscaping" role="tab" aria-selected="false">Landscaping</button>
-          <button class="filter" type="button" data-filter="hardscape" role="tab" aria-selected="false">Hardscape &amp; Cleanup</button>
-        </div>
-      </div>
-
-      <div class="svc-grid" id="svcGrid">
-        <article class="svc-card" data-id="mowing" data-category="lawn" data-price="65" data-name="Weekly Mowing" data-reveal>
-          <div class="svc-card__media">
-            <img src="https://images.unsplash.com/photo-1558904541-efa843a96f01?auto=format&fit=crop&w=800&q=80" alt="Freshly mowed lawn with crisp stripes and clean edging" width="800" height="500" loading="lazy" decoding="async" />
-          </div>
-          <div class="svc-card__body">
-            <h3>Weekly Mowing</h3>
-            <p>Mowing at the right height, string-trimmed borders and blown-clean hardscape every visit.</p>
-            <div class="svc-card__foot">
-              <span class="svc-card__price">from $65</span>
-              <button class="add-btn" type="button" data-add="mowing" aria-pressed="false">+ Add</button>
-            </div>
-          </div>
-        </article>
-
-        <article class="svc-card" data-id="sod" data-category="lawn" data-price="450" data-name="Sod Installation" data-reveal>
-          <div class="svc-card__media">
-            <img src="https://images.unsplash.com/photo-1592595896551-12b371d546d5?auto=format&fit=crop&w=800&q=80" alt="Newly installed sod lawn with rich green turf" width="800" height="500" loading="lazy" decoding="async" />
-          </div>
-          <div class="svc-card__body">
-            <h3>Sod Installation</h3>
-            <p>Grading, soil prep and premium St. Augustine or Zoysia laid tight and watered in.</p>
-            <div class="svc-card__foot">
-              <span class="svc-card__price">from $450</span>
-              <button class="add-btn" type="button" data-add="sod" aria-pressed="false">+ Add</button>
-            </div>
-          </div>
-        </article>
-
-        <article class="svc-card" data-id="design" data-category="landscaping" data-price="250" data-name="Landscape Design" data-reveal>
-          <div class="svc-card__media">
-            <img src="https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?auto=format&fit=crop&w=800&q=80" alt="Layered landscape planting design with shrubs and stone borders" width="800" height="500" loading="lazy" decoding="async" />
-          </div>
-          <div class="svc-card__body">
-            <h3>Landscape Design</h3>
-            <p>Drawn layouts and plant selection built for Houston heat and clay soil.</p>
-            <div class="svc-card__foot">
-              <span class="svc-card__price">from $250</span>
-              <button class="add-btn" type="button" data-add="design" aria-pressed="false">+ Add</button>
-            </div>
-          </div>
-        </article>
-
-        <article class="svc-card" data-id="trimming" data-category="landscaping" data-price="95" data-name="Tree &amp; Shrub Trimming" data-reveal>
-          <div class="svc-card__media">
-            <img src="https://images.unsplash.com/photo-1598902108854-10e335adac99?auto=format&fit=crop&w=800&q=80" alt="Sculpted hedge and trimmed shrubs in a formal garden" width="800" height="500" loading="lazy" decoding="async" />
-          </div>
-          <div class="svc-card__body">
-            <h3>Tree &amp; Shrub Trimming</h3>
-            <p>Structural pruning and hedges squared to a line — crisp without stripping the plant.</p>
-            <div class="svc-card__foot">
-              <span class="svc-card__price">from $95</span>
-              <button class="add-btn" type="button" data-add="trimming" aria-pressed="false">+ Add</button>
-            </div>
-          </div>
-        </article>
-
-        <article class="svc-card" data-id="cleanup" data-category="hardscape" data-price="120" data-name="Mulch &amp; Yard Cleanup" data-reveal>
-          <div class="svc-card__media">
-            <img src="https://images.unsplash.com/photo-1416879595882-3373a0480b5b?auto=format&fit=crop&w=800&q=80" alt="Garden bed with fresh mulch and hand-turned edges" width="800" height="500" loading="lazy" decoding="async" />
-          </div>
-          <div class="svc-card__body">
-            <h3>Mulch &amp; Yard Cleanup</h3>
-            <p>Hand-cut bed edges, the right mulch depth, leaf removal and a full seasonal refresh.</p>
-            <div class="svc-card__foot">
-              <span class="svc-card__price">from $120</span>
-              <button class="add-btn" type="button" data-add="cleanup" aria-pressed="false">+ Add</button>
-            </div>
-          </div>
-        </article>
-
-        <article class="svc-card" data-id="hardscaping" data-category="hardscape" data-price="350" data-name="Hardscaping &amp; Drainage" data-reveal>
-          <div class="svc-card__media">
-            <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80" alt="Modern home with architectural hardscape and a level lawn" width="800" height="500" loading="lazy" decoding="async" />
-          </div>
-          <div class="svc-card__body">
-            <h3>Hardscaping &amp; Drainage</h3>
-            <p>Paver patios, walkways and French drains set on proper base to move stormwater away.</p>
-            <div class="svc-card__foot">
-              <span class="svc-card__price">from $350</span>
-              <button class="add-btn" type="button" data-add="hardscaping" aria-pressed="false">+ Add</button>
-            </div>
-          </div>
-        </article>
-      </div>
-
-      <div class="yard" data-reveal>
-        <div class="yard__head">
-          <h3>Yard size</h3>
-          <p>Tap to customize your estimate.</p>
-        </div>
-        <div class="yard__opts" role="group" aria-label="Yard size">
-          <button class="yard__opt is-active" type="button" data-yard="small" aria-pressed="true">Small</button>
-          <button class="yard__opt" type="button" data-yard="standard" aria-pressed="false">Standard</button>
-          <button class="yard__opt" type="button" data-yard="large" aria-pressed="false">Large Lot</button>
-        </div>
+      <div class="carousel__pills" id="carPills" role="tablist" aria-label="Service categories">
+        <button class="car-pill is-active" type="button" data-go="0">Weekly Lawn Care</button>
+        <button class="car-pill" type="button" data-go="1">Landscape Design</button>
+        <button class="car-pill" type="button" data-go="2">Mulch &amp; Bed Refresh</button>
+        <button class="car-pill" type="button" data-go="3">Tree &amp; Shrub Trim</button>
+        <button class="car-pill" type="button" data-go="4">Seasonal Cleanup</button>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- ================= WHY ================= -->
-  <section class="section why" aria-labelledby="whyTitle">
-    <div class="shell">
-      <div class="section__head section__head--center" data-reveal>
-        <p class="eyebrow">The Rodriguez Standard</p>
-        <h2 id="whyTitle">Forty-two five-star reviews. <span>Not one exception.</span></h2>
-        <p class="section__lede">
-          We are a small, owner-run crew. That is deliberate — the person who quotes your yard is
-          the person accountable for how it looks when we pull out of the driveway.
-        </p>
-      </div>
-      <div class="pillars">
-        <article class="pillar" data-reveal>
-          <span class="pillar__num" aria-hidden="true">01</span>
-          <h3>On time, every scheduled day</h3>
-          <p>Crews arrive inside the window we give you, and we text if traffic or weather moves it.</p>
-        </article>
-        <article class="pillar" data-reveal>
-          <span class="pillar__num" aria-hidden="true">02</span>
-          <h3>Spotless post-job cleanup</h3>
-          <p>Clippings bagged, walkways and driveways blown clean, beds left tidy.</p>
-        </article>
-        <article class="pillar" data-reveal>
-          <span class="pillar__num" aria-hidden="true">03</span>
-          <h3>Honest, upfront pricing</h3>
-          <p>Fixed quotes in writing before work begins. No surprise line items, no pressure.</p>
-        </article>
-        <article class="pillar" data-reveal>
-          <span class="pillar__num" aria-hidden="true">04</span>
-          <h3>Residential &amp; commercial</h3>
-          <p>Private homes, rental portfolios, HOA common areas and small commercial grounds.</p>
-        </article>
+<!-- ================= CRAFT CHAPTERS ================= -->
+<section class="chapter chapter--1" aria-labelledby="ch1">
+  <div class="chapter__bg" aria-hidden="true"></div>
+  <div class="shell chapter__inner">
+    <p class="chapter__num" data-reveal>01 · PRECISION EDGE</p>
+    <h2 id="ch1" data-reveal>Lines so crisp they read like architecture.</h2>
+    <p class="chapter__lede" data-reveal>String-trimmed borders, squared hedges and clean hardscape edges on every single visit — the signature that separates a mowed lawn from a manicured one.</p>
+  </div>
+</section>
+
+<section class="chapter chapter--2" aria-labelledby="ch2">
+  <div class="chapter__bg" aria-hidden="true"></div>
+  <div class="shell chapter__inner">
+    <p class="chapter__num" data-reveal>02 · TURF HEALTH</p>
+    <h2 id="ch2" data-reveal>Right height. Right season. Right soil.</h2>
+    <p class="chapter__lede" data-reveal>Houston heat and clay demand a plan, not a guess. We mow to species-correct height, feed on schedule and fix drainage before it becomes a problem.</p>
+  </div>
+</section>
+
+<section class="chapter chapter--3" aria-labelledby="ch3">
+  <div class="chapter__bg" aria-hidden="true"></div>
+  <div class="shell chapter__inner">
+    <p class="chapter__num" data-reveal>03 · CURB APPEAL</p>
+    <h2 id="ch3" data-reveal>First impressions, engineered.</h2>
+    <p class="chapter__lede" data-reveal>From sod installation to bespoke hardscape and low-voltage uplighting — every element composed for the architectural character of your home.</p>
+  </div>
+</section>
+
+<!-- ================= REVIEWS ================= -->
+<section class="section reviews" id="reviews" aria-labelledby="reviewsTitle">
+  <div class="shell">
+    <div class="section__head section__head--center" data-reveal>
+      <p class="eyebrow">Client love</p>
+      <h2 id="reviewsTitle">What Houston says about <span>the stripes</span></h2>
+      <div class="reviews__summary">
+        <span class="reviews__stars" aria-hidden="true">★★★★★</span>
+        <span><strong>5.0</strong> · 42 five-star Google reviews</span>
       </div>
     </div>
-  </section>
-
-  <!-- ================= REVIEWS ================= -->
-  <section class="section reviews" id="reviews" aria-labelledby="reviewsTitle">
-    <div class="shell">
-      <div class="section__head section__head--center" data-reveal>
-        <p class="eyebrow">Client love</p>
-        <h2 id="reviewsTitle">What Houston says about <span>the stripes</span></h2>
-        <div class="reviews__summary">
-          <span class="reviews__stars" aria-hidden="true">★★★★★</span>
-          <span><strong>5.0</strong> · 42 five-star Google reviews</span>
-        </div>
-      </div>
-      <div class="review-grid">
-        <figure class="quote" data-reveal>
-          <div class="quote__stars" aria-label="5 out of 5 stars">★★★★★</div>
-          <blockquote>They arrive the same day every week, edge like it is a blueprint, and leave the driveway cleaner than they found it. Our St. Augustine has never looked this good — and the price never moved.</blockquote>
-          <figcaption><strong>Marissa T.</strong><span>Memorial · Weekly maintenance</span></figcaption>
-        </figure>
-        <figure class="quote" data-reveal>
-          <div class="quote__stars" aria-label="5 out of 5 stars">★★★★★</div>
-          <blockquote>We interviewed four companies. Rodriguez was the only one who measured the yard, explained the drainage problem, and put a fixed price in writing. Not a single surprise on the invoice.</blockquote>
-          <figcaption><strong>Daniel R.</strong><span>The Heights · Drainage &amp; beds</span></figcaption>
-        </figure>
-        <figure class="quote" data-reveal>
-          <div class="quote__stars" aria-label="5 out of 5 stars">★★★★★</div>
-          <blockquote>Complete backyard transformation: new sod, rebuilt beds, paver patio and lighting. Three weeks, spotless site every evening, and the lawn stripes are honestly unreal.</blockquote>
-          <figcaption><strong>Priya S.</strong><span>River Oaks · Full yard makeover</span></figcaption>
-        </figure>
-        <figure class="quote" data-reveal>
-          <div class="quote__stars" aria-label="5 out of 5 stars">★★★★★</div>
-          <blockquote>Texted at 8am about a storm-dropped limb blocking the side gate. They replied in minutes and the crew was out before lunch. Fast, fair, genuinely easy to deal with.</blockquote>
-          <figcaption><strong>Marcus L.</strong><span>Bellaire · Storm cleanup</span></figcaption>
-        </figure>
-      </div>
+    <div class="review-grid">
+      <figure class="quote" data-reveal>
+        <div class="quote__stars" aria-label="5 out of 5 stars">★★★★★</div>
+        <blockquote>They arrive the same day every week, edge like it is a blueprint, and leave the driveway cleaner than they found it. Our St. Augustine has never looked this good — and the price never moved.</blockquote>
+        <figcaption><strong>Marissa T.</strong><span>Memorial · Weekly maintenance</span></figcaption>
+      </figure>
+      <figure class="quote" data-reveal>
+        <div class="quote__stars" aria-label="5 out of 5 stars">★★★★★</div>
+        <blockquote>We interviewed four companies. Rodriguez was the only one who measured the yard, explained the drainage problem, and put a fixed price in writing. Not a single surprise on the invoice.</blockquote>
+        <figcaption><strong>Daniel R.</strong><span>The Heights · Drainage &amp; beds</span></figcaption>
+      </figure>
+      <figure class="quote" data-reveal>
+        <div class="quote__stars" aria-label="5 out of 5 stars">★★★★★</div>
+        <blockquote>Complete backyard transformation: new sod, rebuilt beds, paver patio and lighting. Three weeks, spotless site every evening, and the lawn stripes are honestly unreal.</blockquote>
+        <figcaption><strong>Priya S.</strong><span>River Oaks · Full yard makeover</span></figcaption>
+      </figure>
+      <figure class="quote" data-reveal>
+        <div class="quote__stars" aria-label="5 out of 5 stars">★★★★★</div>
+        <blockquote>Texted at 8am about a storm-dropped limb blocking the side gate. They replied in minutes and the crew was out before lunch. Fast, fair, genuinely easy to deal with.</blockquote>
+        <figcaption><strong>Marcus L.</strong><span>Bellaire · Storm cleanup</span></figcaption>
+      </figure>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- ================= AREA & HOURS ================= -->
-  <section class="section area" id="area" aria-labelledby="areaTitle">
-    <div class="shell area__grid">
-      <div class="area__copy" data-reveal>
-        <p class="eyebrow">Coverage</p>
-        <h2 id="areaTitle">Houston, TX &amp; <span>surrounding communities</span></h2>
-        <p class="section__lede">
-          Weekly routes run across central Houston and the surrounding suburbs. Just outside a
-          listed area? Text us your zip code and we will tell you honestly whether we can service
-          you properly.
-        </p>
-        <ul class="area__list">
-          <li>River Oaks</li><li>Memorial</li><li>The Heights</li><li>West University</li>
-          <li>Bellaire</li><li>Tanglewood</li><li>Meyerland</li><li>Katy</li>
-          <li>Cypress</li><li>Sugar Land</li><li>Pearland</li><li>Missouri City</li>
-          <li>Spring</li><li>The Woodlands</li>
-        </ul>
-        <p class="area__commercial">
-          <strong>Commercial &amp; HOA:</strong> scheduled grounds maintenance, common-area planting
-          and seasonal color for offices, retail and managed communities.
-        </p>
-      </div>
-
-      <aside class="hours-card" data-reveal aria-labelledby="hoursTitle">
-        <p class="hours-card__kicker">Service hours</p>
-        <h3 id="hoursTitle">When we are on the road</h3>
-        <dl class="hours">
-          <div><dt>Monday – Friday</dt><dd>7:00 AM – 7:00 PM</dd></div>
-          <div><dt>Saturday</dt><dd>7:00 AM – 2:00 PM</dd></div>
-          <div class="hours__closed"><dt>Sunday</dt><dd>Closed</dd></div>
-        </dl>
-        <div class="hours-card__divider" aria-hidden="true"></div>
-        <p class="hours-card__label">Direct phone, text &amp; WhatsApp</p>
-        <a class="hours-card__phone" href="tel:+18325747414">+1 832-574-7414</a>
-        <p class="hours-card__note">Estimates answered during service hours. Texts are usually the fastest way to reach us.</p>
-        <a class="btn btn--primary btn--block" href="#catalog">Request free estimate</a>
-      </aside>
+<!-- ================= AREA & HOURS ================= -->
+<section class="section area" id="area" aria-labelledby="areaTitle">
+  <div class="shell area__grid">
+    <div class="area__copy" data-reveal>
+      <p class="eyebrow">Coverage</p>
+      <h2 id="areaTitle">Houston, TX &amp; <span>surrounding communities</span></h2>
+      <p class="section__lede">
+        Weekly routes run across central Houston and the surrounding suburbs. Just outside a
+        listed area? Text us your zip code and we will tell you honestly whether we can service
+        you properly.
+      </p>
+      <ul class="area__list">
+        <li>River Oaks</li><li>Memorial</li><li>The Heights</li><li>West University</li>
+        <li>Bellaire</li><li>Tanglewood</li><li>Meyerland</li><li>Katy</li>
+        <li>Cypress</li><li>Sugar Land</li><li>Pearland</li><li>Missouri City</li>
+        <li>Spring</li><li>The Woodlands</li>
+      </ul>
     </div>
-  </section>
+
+    <aside class="hours-card" data-reveal aria-labelledby="hoursTitle">
+      <p class="hours-card__kicker">Service hours</p>
+      <h3 id="hoursTitle">When we are on the road</h3>
+      <dl class="hours">
+        <div><dt>Monday – Friday</dt><dd>7:00 AM – 7:00 PM</dd></div>
+        <div><dt>Saturday</dt><dd>7:00 AM – 2:00 PM</dd></div>
+        <div class="hours__closed"><dt>Sunday</dt><dd>Closed</dd></div>
+      </dl>
+      <div class="hours-card__divider" aria-hidden="true"></div>
+      <p class="hours-card__label">Direct phone, text &amp; WhatsApp</p>
+      <a class="hours-card__phone" href="tel:+18325747414">+1 832-574-7414</a>
+      <p class="hours-card__note">Estimates answered during service hours. Texts are usually the fastest way to reach us.</p>
+      <a class="btn btn--gold btn--block" href="#services">Request free estimate</a>
+    </aside>
+  </div>
+</section>
+
 </main>
 
 <!-- ================= FOOTER ================= -->
@@ -331,21 +344,20 @@
     <div class="footer__col">
       <h4>Explore</h4>
       <ul>
-        <li><a href="#catalog">Services</a></li>
+        <li><a href="#services">Services</a></li>
         <li><a href="#reviews">5.0★ Reviews</a></li>
         <li><a href="#area">Service Area &amp; Hours</a></li>
-        <li><a href="#catalog">Free Estimate</a></li>
+        <li><a href="#services">Free Estimate</a></li>
       </ul>
     </div>
     <div class="footer__col">
       <h4>Services</h4>
       <ul>
-        <li><a href="#catalog">Lawn maintenance</a></li>
-        <li><a href="#catalog">Landscape design</a></li>
-        <li><a href="#catalog">Sod installation</a></li>
-        <li><a href="#catalog">Mulch &amp; cleanups</a></li>
-        <li><a href="#catalog">Trimming &amp; hedges</a></li>
-        <li><a href="#catalog">Pavers &amp; drainage</a></li>
+        <li><a href="#services">Lawn maintenance</a></li>
+        <li><a href="#services">Landscape design</a></li>
+        <li><a href="#services">Mulch &amp; edging</a></li>
+        <li><a href="#services">Trimming &amp; hedges</a></li>
+        <li><a href="#services">Storm cleanup</a></li>
       </ul>
     </div>
     <div class="footer__col footer__col--contact">
@@ -380,17 +392,17 @@
       <button class="drawer__close" type="button" data-close-drawer aria-label="Close">×</button>
     </div>
     <ul class="drawer__list" id="drawerList"></ul>
-    <div class="drawer__row"><span>Yard size</span><strong id="drawerYard">Small</strong></div>
+    <div class="drawer__row"><span>Lot size</span><strong id="drawerYard">Small</strong></div>
     <div class="drawer__total"><span>Estimated total</span><strong id="drawerTotal">$0.00</strong></div>
     <p class="drawer__note">Starting prices — the final quote is confirmed after a quick walkthrough. No obligation.</p>
     <div class="drawer__actions">
-      <a class="btn btn--primary" id="drawerSms" href="sms:+18325747414">Text this quote</a>
+      <a class="btn btn--gold" id="drawerSms" href="sms:+18325747414">Text this quote</a>
       <a class="btn btn--whatsapp" id="drawerWa" href="https://wa.me/18325747414" target="_blank" rel="noopener noreferrer">WhatsApp</a>
     </div>
     <a class="drawer__call" href="tel:+18325747414">Prefer to talk? Call +1 832-574-7414</a>
   </div>
 </div>
 
-<script src="assets/js/main.js" defer></script>
+<script src="./assets/js/main.js" defer></script>
 </body>
 </html>
